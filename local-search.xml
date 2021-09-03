@@ -4,6 +4,29 @@
   
   
   <entry>
+    <title>相关消息攻击</title>
+    <link href="/2021/09/02/%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB/"/>
+    <url>/2021/09/02/%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr><p>本文介绍的是相关消息攻击。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><p><a href="https://ycdxsb.cn/2decc525.html">https://ycdxsb.cn/2decc525.html</a></p></li><li><p><a href="https://xz.aliyun.com/t/6813#toc-2">https://xz.aliyun.com/t/6813#toc-2</a></p></li><li><p>《Low-Exponent RSA with Related Messages 》by Coppersmith, Franklin, Patarin and Reiter</p></li><li><p>《Solving Systems of Modular Equations in OneVariable: How Many RSA-Encrypted MessagesDoes Eve Need to Know?》by Alexander May, Maike Ritzenhofent</p><h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><ul><li><p>RSA原理</p></li><li><p>lattice和LLL算法</p></li><li><p>多项式代数</p><h2 id="使用工具-库"><a href="#使用工具-库" class="headerlink" title="使用工具/库"></a>使用工具/库</h2><ul><li>sagemath</li><li>python的gmpy2库</li></ul></li></ul><h1 id="线性相关消息"><a href="#线性相关消息" class="headerlink" title="线性相关消息"></a>线性相关消息</h1></li></ul><h2 id="k-2（k为消息数）"><a href="#k-2（k为消息数）" class="headerlink" title="k=2（k为消息数）"></a>k=2（k为消息数）</h2><p>假设两则相关消息满足：</p><script type="math/tex; mode=display">(a_1m+b_1)^e \equiv c_1\ (mod\ n)\\(a_2m+b_2)^e \equiv c_2\ (mod\ n)</script><p>那么模多项式$(a_1m+b_1)^e-c_1\ (mod\ n)$和$(a_2m+b_2)^e-c_2\ (mod\ n)$一般来说会存在一个形如<script type="math/tex">m-m_0</script>的$gcd$，对这两个多项式在模n下求$gcd$，得到$m-m_0$，$m_0$即为我们要求的$m$。对于这两个多项式$gcd$不为线性函数的情况，本文暂不讨论。</p><h2 id="k-gt-2（k为消息数"><a href="#k-gt-2（k为消息数" class="headerlink" title="k&gt;2（k为消息数)"></a>k&gt;2（k为消息数)</h2><p>假设k则消息之间满足多项式：</p><script type="math/tex; mode=display">p(x_1,x_2,...,x_k)=0</script><p>并且有：</p><script type="math/tex; mode=display">p_1(x_1)=x_1^e-c_1=0\ (mod\ n)</script><script type="math/tex; mode=display">p_2(x_2)=x_2^e-c_2=0\ (mod\ n)</script><script type="math/tex; mode=display">...</script><script type="math/tex; mode=display">p_i(x_i)=x_i^e-c_i=0\ (mod\ n)</script><script type="math/tex; mode=display">...</script><script type="math/tex; mode=display">p_k(x_k)=x_k^e-c_k=0\ (mod\ n)</script><p>然后我们求出它们的Groebner基，即可求</p><p>得$x_i=m_i$，对于这k个式子，可求出k个解，这k个解即为我们要找的解。</p><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><p>通过我们的的操作可以看出，其实这里并不局限于线性相关，在这里多项式相关都是可以的，所以此处改为“多项式相关消息”可能更准确。</p><h1 id="Hastad广播攻击"><a href="#Hastad广播攻击" class="headerlink" title="Hastad广播攻击"></a>Hastad广播攻击</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>前面介绍的相关消息攻击模数都是一样的，Hastad广播攻击中则对模数不同的攻击进行了讨论。</p><h2 id="攻击方法"><a href="#攻击方法" class="headerlink" title="攻击方法"></a>攻击方法</h2><p>对于使用不同的但是互素的模数n，相同的加密指数e，加密e个明文得到e个密文：</p><script type="math/tex; mode=display">(a_ix+b_i)^e \equiv c_i\ (mod\ n_i)\ ,\ i=1,2,...,e</script><p>由于模数互素，我们通过多项式的中国剩余定理，可以得到$P(x)\equiv 0\ (mod\ M)，M=\prod_{i=1}^en_i$，$P(x)$存在唯一解，并且这个解满足LLL算法的条件，所以我们可以据此求出解，得到x，恢复明文。</p><h1 id="SMUPE问题"><a href="#SMUPE问题" class="headerlink" title="SMUPE问题"></a>SMUPE问题</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>无论是前面的线性相关消息攻击（多项式相关消息攻击），还是Hastad广播攻击，我们尽管使用了不同的模数n，但我们使用的指数e都是一样的。在SMUPE问题（systems of modular univariate polynomial equations）中，我们使用的加密指数e也可以不同，如：</p><script type="math/tex; mode=display">(a_ix+b_i)^{e_i}\equiv c_i\ (mod\ n_i)\ ,\ i=1,2,...,k\\记f_i(x)=(a_ix+b_i)^{e_i}</script><p>此时由于模数不同，我们无法直接使用中国剩余定理，因此需要构造同阶的多项式。</p><p>为了构造这样的多项式，Hastad采取了两边同时乘$(a_ix+b_i)^{\delta-\delta_i}$的方法来统一阶数，其中$\delta$为最高次数。</p><p>而在论文《Solving Systems of Modular Equations in OneVariable: How Many RSA-Encrypted MessagesDoes Eve Need to Know?》by Alexander May, Maike Ritzenhofent 中，他们提出了另外一种更有效的平衡阶数的方法，用阶数的最小公倍数来构造（在这里$\delta_i$的意义和$e_i$一样）：</p><script type="math/tex; mode=display">[f_i(x)]^{\delta/\delta_i}\equiv c_i^{\delta/\delta_i}\ (mod\ n_i)\ , \ i=1,2,...,k\ ,\ \delta=lcm(\delta_j,j=1,2,...,k)</script><p>这里的所有多项式都是首一的多项式（$monic\ polynomial$）.</p><p>此时可以用中国剩余定理解决，作者们证明了这种攻击能够成功的条件为（满足LLL算法的条件）：</p><script type="math/tex; mode=display">\sum_{i=1}^k1/\delta_i≥1</script><hr><p>本文对相关消息攻击的讨论大致就如上所述，本文为理论性学习文章，因此不涉及代码部分，解题方面还需移步CTF-Crypto-题目实践。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+      <category>Crypto</category>
+      
+      <category>理论学习</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Love_DengFeng&#39;s Blog</title>
     <link href="/2021/08/30/Love_DengFeng&#39;s%20Blog/"/>
     <url>/2021/08/30/Love_DengFeng&#39;s%20Blog/</url>
