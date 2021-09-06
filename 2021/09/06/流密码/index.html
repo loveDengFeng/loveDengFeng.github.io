@@ -15,12 +15,28 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="description" content="">
-  <meta name="author" content="DengFeng">
+  <meta name="author" content="等风">
   <meta name="keywords" content="">
   
-  <title>Archives - Love_DengFeng&#39;s Blog</title>
+  <title>流密码 - Love_DengFeng&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
 
 
 
@@ -50,7 +66,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -149,9 +165,46 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Archive">
+            <span class="h2" id="subtitle" title="流密码">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-09-06 23:11" pubdate>
+        September 6, 2021 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      560 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      6
+       分钟
+    </span>
+  
+
+  
+  
+</div>
 
             
           </div>
@@ -164,46 +217,111 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">3 posts in total.</p>
-  <hr>
-  
-  
-    
       
-      <p class="h5">2021</p>
-    
-    <a href="/2021/09/06/%E6%B5%81%E5%AF%86%E7%A0%81/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">流密码</span>
-      <time style="float: right;">09-06</time>
-    </a>
-  
-    
-    <a href="/2021/09/02/%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">相关消息攻击</span>
-      <time style="float: right;">09-02</time>
-    </a>
-  
-</div>
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">流密码</h1>
+            
+            <div class="markdown-body">
+              <h1 id="流密码综述"><a href="#流密码综述" class="headerlink" title="流密码综述"></a>流密码综述</h1><p>流密码又称为序列密码，它是密码学的一个重要部分。在CTF的密码学中，流密码一般都以以下的几种情形出现：</p>
+<ul>
+<li><p>线性同余发生器（LCG）</p>
+</li>
+<li><p>MT19937（python随机数库的预测）</p>
+</li>
+<li><p>线性反馈移位寄存器（LFSR）和非线性反馈移位寄存器（NFSR）</p>
+</li>
+<li><p>RC4</p>
+<p>其中，重点和难点应该是在LFSR和它所衍生出的一系列算法。下面总结一下流密码。</p>
+<h1 id="线性同余发生器（LCG）"><a href="#线性同余发生器（LCG）" class="headerlink" title="线性同余发生器（LCG）"></a>线性同余发生器（LCG）</h1><p>形如$X_{n+1}\equiv aX_n+b\ (mod\ m)$（$X_0为已知种子$），若$gcd(a,m)=1$，则LCG可以取得最大周期（遍历所有可能结果）。</p>
+<h2 id="一般题型"><a href="#一般题型" class="headerlink" title="一般题型"></a>一般题型</h2><p>对于LCG的一般情况下的攻击可分为两类，一类是a,b未知，另一类是a,b,m都未知。</p>
+<p>对于前者，我们只需要知道连续的三个生成值，即可通过解模线性方程组求解。</p>
+<p>对于后者，已知连续的五个生成值，我们可以通过构造模等比数列，再通过求gcd的方法求得m的值，接下来的过程就很好办了。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://zeroyu.xyz/2018/11/02/Cracking-LCG/">攻击线性同余生成器(LCG) (zeroyu.xyz)</a></p>
+<h2 id="创新题型"><a href="#创新题型" class="headerlink" title="创新题型"></a>创新题型</h2><p>在Van1sh神的blog里面，有一篇介绍HNP（Hidden Number Probem）的文章,题目给出了a,b,m的值，生成了20个128位的随机数，但是只给出了每个数的高64位，然后题目的重点是恢复原来的seed。关于HNP问题的内容仍在学习中，等学明白了再将这一块更新。先给出V神文章链接：</p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/204846">浅尝lattice之HNP</a></p>
+<h1 id="python随机数——MT19937"><a href="#python随机数——MT19937" class="headerlink" title="python随机数——MT19937"></a>python随机数——MT19937</h1><p>CTF一般随机数攻击方法：爆破或者预测</p>
+<p>预测python随机数的库：randcrack</p>
+<p>可在泄露624个连续随机数后进行预测</p>
+<h1 id="线性反馈移位寄存器（LFSR）"><a href="#线性反馈移位寄存器（LFSR）" class="headerlink" title="线性反馈移位寄存器（LFSR）"></a>线性反馈移位寄存器（LFSR）</h1><p>这一块一般题型都不难，但是水比较深，涉及到很多代数知识和分析方法如Galois理论还有GF（2）域上的多项式代数以及相关攻击、快速相关攻击、B-M算法，这段时间把这些都学会。</p>
+<p>待更新。</p>
+<h1 id="非线性反馈移位寄存器（NFSR）"><a href="#非线性反馈移位寄存器（NFSR）" class="headerlink" title="非线性反馈移位寄存器（NFSR）"></a>非线性反馈移位寄存器（NFSR）</h1><p>待更新。</p>
+<h1 id="RC4"><a href="#RC4" class="headerlink" title="RC4"></a>RC4</h1><p>待更新。</p>
+</li>
+</ul>
 
-
-
-
-              </div>
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/CTF/">CTF</a>
+                    
+                      <a class="hover-with-bg" href="/categories/CTF/Crypto/">Crypto</a>
+                    
+                      <a class="hover-with-bg" href="/categories/CTF/Crypto/%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0/">理论学习</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/09/02/%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB/">
+                        <span class="hidden-mobile">相关消息攻击</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -283,9 +401,15 @@
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 

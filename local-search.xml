@@ -4,6 +4,29 @@
   
   
   <entry>
+    <title>流密码</title>
+    <link href="/2021/09/06/%E6%B5%81%E5%AF%86%E7%A0%81/"/>
+    <url>/2021/09/06/%E6%B5%81%E5%AF%86%E7%A0%81/</url>
+    
+    <content type="html"><![CDATA[<h1 id="流密码综述"><a href="#流密码综述" class="headerlink" title="流密码综述"></a>流密码综述</h1><p>流密码又称为序列密码，它是密码学的一个重要部分。在CTF的密码学中，流密码一般都以以下的几种情形出现：</p><ul><li><p>线性同余发生器（LCG）</p></li><li><p>MT19937（python随机数库的预测）</p></li><li><p>线性反馈移位寄存器（LFSR）和非线性反馈移位寄存器（NFSR）</p></li><li><p>RC4</p><p>其中，重点和难点应该是在LFSR和它所衍生出的一系列算法。下面总结一下流密码。</p><h1 id="线性同余发生器（LCG）"><a href="#线性同余发生器（LCG）" class="headerlink" title="线性同余发生器（LCG）"></a>线性同余发生器（LCG）</h1><p>形如$X_{n+1}\equiv aX_n+b\ (mod\ m)$（$X_0为已知种子$），若$gcd(a,m)=1$，则LCG可以取得最大周期（遍历所有可能结果）。</p><h2 id="一般题型"><a href="#一般题型" class="headerlink" title="一般题型"></a>一般题型</h2><p>对于LCG的一般情况下的攻击可分为两类，一类是a,b未知，另一类是a,b,m都未知。</p><p>对于前者，我们只需要知道连续的三个生成值，即可通过解模线性方程组求解。</p><p>对于后者，已知连续的五个生成值，我们可以通过构造模等比数列，再通过求gcd的方法求得m的值，接下来的过程就很好办了。</p><p>参考链接：<a href="https://zeroyu.xyz/2018/11/02/Cracking-LCG/">攻击线性同余生成器(LCG) (zeroyu.xyz)</a></p><h2 id="创新题型"><a href="#创新题型" class="headerlink" title="创新题型"></a>创新题型</h2><p>在Van1sh神的blog里面，有一篇介绍HNP（Hidden Number Probem）的文章,题目给出了a,b,m的值，生成了20个128位的随机数，但是只给出了每个数的高64位，然后题目的重点是恢复原来的seed。关于HNP问题的内容仍在学习中，等学明白了再将这一块更新。先给出V神文章链接：</p><p><a href="https://www.anquanke.com/post/id/204846">浅尝lattice之HNP</a></p><h1 id="python随机数——MT19937"><a href="#python随机数——MT19937" class="headerlink" title="python随机数——MT19937"></a>python随机数——MT19937</h1><p>CTF一般随机数攻击方法：爆破或者预测</p><p>预测python随机数的库：randcrack</p><p>可在泄露624个连续随机数后进行预测</p><h1 id="线性反馈移位寄存器（LFSR）"><a href="#线性反馈移位寄存器（LFSR）" class="headerlink" title="线性反馈移位寄存器（LFSR）"></a>线性反馈移位寄存器（LFSR）</h1><p>这一块一般题型都不难，但是水比较深，涉及到很多代数知识和分析方法如Galois理论还有GF（2）域上的多项式代数以及相关攻击、快速相关攻击、B-M算法，这段时间把这些都学会。</p><p>待更新。</p><h1 id="非线性反馈移位寄存器（NFSR）"><a href="#非线性反馈移位寄存器（NFSR）" class="headerlink" title="非线性反馈移位寄存器（NFSR）"></a>非线性反馈移位寄存器（NFSR）</h1><p>待更新。</p><h1 id="RC4"><a href="#RC4" class="headerlink" title="RC4"></a>RC4</h1><p>待更新。</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+      <category>Crypto</category>
+      
+      <category>理论学习</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>相关消息攻击</title>
     <link href="/2021/09/02/%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB/"/>
     <url>/2021/09/02/%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB/</url>
