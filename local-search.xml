@@ -4,6 +4,29 @@
   
   
   <entry>
+    <title>密码系统</title>
+    <link href="/2021/09/08/%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/"/>
+    <url>/2021/09/08/%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Diffie-Hellman"><a href="#Diffie-Hellman" class="headerlink" title="Diffie-Hellman"></a>Diffie-Hellman</h1><p>Diffie-Hellman密钥交换。</p><p>基于离散对数困难问题。</p><h1 id="ElGamal"><a href="#ElGamal" class="headerlink" title="ElGamal"></a>ElGamal</h1><p>基于离散对数问题。</p><h2 id="密钥生成"><a href="#密钥生成" class="headerlink" title="密钥生成"></a>密钥生成</h2><p>1.选取足够大的素数p保证p-1存在很大的素因子，使得在$Z_p$上求解离散对数问题是困难的</p><p>2.选取$Z_p ^*$的生成元g</p><p>3.随机选取整数k满足$0≤k≤p-2$，并计算$g^k\equiv y\ (mod\ p)$</p><p>公钥为{$p,g,y$}，私钥为{$k$}。</p><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><p>选取一个随机整数$r\in Z_{p-1}$，得到密文$(y_1,y_2)=(g^rmod\ p,my^rmod\ p)$，其中m为要发送的消息（明文）。</p><h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p>解密时，通过私钥k计算$(y_1^k)^{-1}y_2mod\ p=(g^{rk})^{-1}my^rmod\ p=m$.</p><p>参考CTF WIKI</p><h1 id="Paillier-Cryptosystem"><a href="#Paillier-Cryptosystem" class="headerlink" title="Paillier Cryptosystem"></a>Paillier Cryptosystem</h1><h2 id="密钥生成-1"><a href="#密钥生成-1" class="headerlink" title="密钥生成"></a>密钥生成</h2><p>一般过程：</p><p>1.随机选择两个大素数p,q满足$gcd(pq,(p-1)(q-1))=1$，当p,q长度相同时一定有该结论</p><p>2.计算$n=pq，\lambda=lcm(p-1,q-1)=(p-1)(q-1)/gcd(p-1,q-1)$</p><p>3.随机选取整数$g,0&lt;g&lt;n^2$</p><p>4.$L(x)=(x-1)/n$</p><p>5.计算$\mu=(L(g^\lambda(mod\ n^2)))^{-1}\ (mod\ n)$</p><p>6.公钥为（n，g），私钥为（$\lambda，\mu$）</p><p>特殊情况：</p><p>通常，为简便，我们参数选取如下：</p><p>1.$g=n+1$</p><p>2.$\lambda=\varphi(n)$</p><p>3.$\mu=\varphi(n)^{-1}\ (mod\ n)$</p><h2 id="加密-1"><a href="#加密-1" class="headerlink" title="加密"></a>加密</h2><p>1.m为要发送的消息（明文），满足$0≤m&lt;n$</p><p>2.随机选取r，使得$gcd(r,n)=1$</p><p>3.密文$c:c=g^m\cdot r^n\ (mod\ n)$</p><h2 id="解密-1"><a href="#解密-1" class="headerlink" title="解密"></a>解密</h2><p>$m=(L(c^\lambda\ (mod\ n^2))\cdot\mu)\ (mod\ n)$</p><h1 id="同态性质"><a href="#同态性质" class="headerlink" title="同态性质"></a>同态性质</h1><p>$D(E(m_1,r_1)\cdot E(m_2,r_2))\ (mod\ n^2)=m_1+m2\ (mod\ n$)</p><p>$D(E(m,r)^k\ mod\ n^2)=km\ mod\ n$</p><h1 id="攻击方法"><a href="#攻击方法" class="headerlink" title="攻击方法"></a>攻击方法</h1><ul><li><p>同态性质攻击</p></li><li><p>选择明文攻击</p><p>参考：<a href="http://coinc1dens.me/2021/07/01/Some_other_cryptosystem.html">一些密码系统 - Coinc1dens’ Diary</a></p></li></ul><h1 id="DSA-System"><a href="#DSA-System" class="headerlink" title="DSA System"></a>DSA System</h1><p>与前面的不同，DSA算法是一种数字签名算法，一般不用于加解密</p><h2 id="密钥生成-2"><a href="#密钥生成-2" class="headerlink" title="密钥生成"></a>密钥生成</h2><p>1.选择合适的哈希函数，一般选择SHA-1</p><p>2.选择密钥的长度L和N，这两个值决定了签名的安全程度。一般来说L为64的倍数，且$512≤L≤1024$，N必须不大于哈希函数H输出的长度</p><p>3.选择N比特的素数q</p><p>4.选择L比特的素数p，使得$q|p-1$</p><p>5.选择满足$g^k\equiv1\ mod\ p$的最小正整数k为q的g（即g的阶为q）。在这里，我们可以通过计算$g\equiv h^{p-1\over q}\ mod\ p$来得到g，其中$1&lt;h&lt;p-1$.</p><p>6.选择私钥x，$0&lt;x&lt;q$，计算$y\equiv g^x\ mod\ p$</p><p>公钥为（p,q,g,y)，私钥为(x).</p><h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><p>签名步骤：</p><p>1.选择随机整数k作为临时密钥,$0&lt;k&lt;q$</p><p>2.计算$r\equiv(g^k\ mod\ p)\ mod\ q$</p><p>3.计算$s\equiv(H(m)+xr)k^{-1}\ mod\ q$</p><p>签名结果为（r，s）</p><h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>验证步骤：</p><p>1.计算辅助量，$w\equiv s^{-1}\ mod\ q$</p><p>2.计算辅助量，$u_1\equiv H(m)w\ mod\ q$</p><p>3.计算辅助量，$u_2\equiv rw\ mod\ q$</p><p>4.计算$v\equiv (g^{u_1}y^{u_2}\ mod\ p)\ mod\ q$</p><p>5.如果有$v=r$，则验证成功</p><h2 id="攻击方法-1"><a href="#攻击方法-1" class="headerlink" title="攻击方法"></a>攻击方法</h2><h3 id="k泄露"><a href="#k泄露" class="headerlink" title="k泄露"></a>k泄露</h3><p>如果我们知道了k，那么我们可以获取私钥为：</p><script type="math/tex; mode=display">x\equiv r^{-1}(ks-H(m))\ mod\ q</script><h3 id="k共享"><a href="#k共享" class="headerlink" title="k共享"></a>k共享</h3><p>如果在两次签名过程使用了同一个k，这时我们可以攻击。</p><p>假设签名的消息为$m_1,m_2$，显然，两者的r值相同，我们还有：</p><script type="math/tex; mode=display">s_1\equiv (H(m_1)+xr)k^{-1}\ mod\ q</script><script type="math/tex; mode=display">s_2\equiv (H(m_2)+xr)k^{-1}\ mod\ q</script><p>化为：</p><script type="math/tex; mode=display">s_1k\equiv H(m_1)+xr</script><script type="math/tex; mode=display">s_2k\equiv H(m_2)+xr</script><p>两式相减</p><script type="math/tex; mode=display">k(s_1-s_2)\equiv H(m_1)-H(m_2)\ mod\ q</script><p>此时我们可以解出k，进一步可以解出x</p><h3 id="进阶攻击方法"><a href="#进阶攻击方法" class="headerlink" title="进阶攻击方法"></a>进阶攻击方法</h3><p>MSB泄露攻击（HNP问题的方法），借助格和LLL算法，待补充</p><h1 id="Shamir’s-Secret-Sharing-Algorithm"><a href="#Shamir’s-Secret-Sharing-Algorithm" class="headerlink" title="Shamir’s Secret Sharing Algorithm"></a>Shamir’s Secret Sharing Algorithm</h1><p>基于拉格朗日插值法（也可理解为方程组的秩）</p><p>(m,n)门限方案指的是任意持有一部分密钥的m个人都能解密，而任何少于m个人都不能解密</p><p>参考链接：<a href="http://coinc1dens.me/2021/07/01/Some_other_cryptosystem.html#shamirs-secret-sharing-algorithm">一些密码系统 - Coinc1dens’ Diary</a></p><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>本文参考：</p><p>CTF WIKI</p><p><a href="http://coinc1dens.me/2021/07/01/Some_other_cryptosystem.html#shamirs-secret-sharing-algorithm">一些密码系统 - Coinc1dens’ Diary</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+      <category>Crypto</category>
+      
+      <category>理论学习</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>流密码</title>
     <link href="/2021/09/06/%E6%B5%81%E5%AF%86%E7%A0%81/"/>
     <url>/2021/09/06/%E6%B5%81%E5%AF%86%E7%A0%81/</url>
