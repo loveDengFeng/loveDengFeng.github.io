@@ -4,6 +4,29 @@
   
   
   <entry>
+    <title>分组密码AES和DES</title>
+    <link href="/2021/09/12/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81AES%E5%92%8CDES/"/>
+    <url>/2021/09/12/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81AES%E5%92%8CDES/</url>
+    
+    <content type="html"><![CDATA[<h1 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h1><p>DES是一种典型的Feistel结构密码体制，它使用长度为56比特的密钥加密（解密）长度为64比特的明文（密文），获得长度为64比特的密文（明文）。其加密流程如下：</p><p>1.传入64比特的明文，进行IP置换</p><p>2.通过密钥扩展算法获得轮密钥，扩展算法为：将初始密钥进行PC-1置换后得到$C_0,D_0$两部分，再进行本轮的循环移位后进入PC-2置换（从56比特选取48比特）得到轮密钥。下一轮的轮密钥和上一轮的轮密钥关系为：</p><script type="math/tex; mode=display">C_i=C_{i-1}<<<<r_i</script><script type="math/tex; mode=display">D_i=D_{i-1}<<<<r_i</script><script type="math/tex; mode=display">K_i=PC-2(C_iD_i)</script><p>3.初始置换后的明文分为左右两部分，进入轮密钥控制的16次F函数（轮函数）迭代（Feistel结构），前十五次的迭代方式为：$L<em>i=R</em>{i-1}，R<em>i=L</em>{i-1}+F(R_{i-1},K_i)$，最后一次的迭代方式稍稍不一样，为：</p><script type="math/tex; mode=display">L_{16}=L_{15}+F(R_{15},K_{16}),R_{16}=R_{15}</script><p>这里的”+”代表异或，最后一次不同的原因是为了保证加解密的一致性——若加密采用的轮密钥为$(K<em>1,K_2,…,K</em>{16})$，则解密采用轮密钥为$(K<em>{16},K</em>{15},…,K_1)$，并且加解密流程采用完全相同的结构和轮函数</p><p>4.进行初始逆置换$IP^{-1}$，得到密文</p><h2 id="核心轮函数F"><a href="#核心轮函数F" class="headerlink" title="核心轮函数F"></a>核心轮函数F</h2><p>1.将输入的32比特通过扩展函数E变为48比特</p><p>2.将得到的48比特与子密钥异或后进入S盒，作为S盒的输入</p><p>3.S盒是一个非线性变换，它将输入通过8个并置的6进4出（比特位）的S盒压缩成32比特。每个S盒都有一张替换表，替换表都有4行16列，对应前十六个整数（长度为4的比特串）的二进制整数全排列。设S盒的输入为$a_1a_2a_3a_4a_5a_6$，则$S(a_1a_2a_3a_4a_5a_6)$就是S盒表中第$a_1a_6$行和第$a_2a_3a_4a_5$列交叉的那个数，这里的$a_1a_6 $和$a_2a_3a_4a_5 $都是二进制整数</p><p>4.将S盒得到的32位比特输出作为输入进行P置换，P置换的结果就是轮函数的输出</p><h1 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h1><p>AES即美国国家高级加密标准（$Advanced\ Encryption\ Standard$），其算法为$Rijndael$算法，分组长度通常为128比特，密钥长度通常也为128比特，加密轮数为10轮</p><h2 id="加密步骤"><a href="#加密步骤" class="headerlink" title="加密步骤"></a>加密步骤</h2><p>首先将输入的明文分组为16个字节$a<em>{00}a</em>{10}a<em>{20}a</em>{30}a<em>{01}a</em>{11}a<em>{21}a</em>{31}a<em>{02}a</em>{12}a<em>{22}a</em>{32}a<em>{03}a</em>{13}a<em>{23}a</em>{33}$，并+按照顺序映射为状态字节矩阵，加密操作结束时，密文按同样顺序从状态抽取，映射顺序为：</p><script type="math/tex; mode=display">\begin{pmatrix}a_{00}&a_{01}&a_{02}&a_{03}\\a_{10}&a_{11}&a_{12}&a_{13}\\a_{20}&a_{21}&a_{22}&a_{23}\\a_{30}&a_{31}&a_{32}&a_{33}\\\end{pmatrix}</script><p>1.由密钥拓展算法将128比特的种子密钥拓展成11个128比特的轮密钥，每一个轮密钥同样被表示成与明文状态矩阵大小相同的矩阵</p><p>2.进行初始白化：将明文状态矩阵与第0轮的轮密钥进行加法运算</p><p>3.进行完全相同的9轮变换，每一轮变换都是以上一轮的输出作为输入，依次执行字节替换、行移位、列混合和轮密钥加四种运算</p><p>4.最后一轮的迭代变换稍有不同，这一轮变换依次执行字节替换、行移位和轮密钥加，没有列混合</p><p>5.将最后一轮输出的结果按照顺序从状态中抽取出来就是密文</p><h3 id="行移位"><a href="#行移位" class="headerlink" title="行移位"></a>行移位</h3><p>状态矩阵每一行按照不同的移位值进行循环左移</p><h3 id="列混合（列混淆）"><a href="#列混合（列混淆）" class="headerlink" title="列混合（列混淆）"></a>列混合（列混淆）</h3><p>将状态矩阵每一列看作$GF(2^8)$域上的次数不超过3的多项式，与下列矩阵作乘法运算</p><script type="math/tex; mode=display">\begin{pmatrix}02&03&01&01\\01&02&03&01\\01&01&02&03\\03&01&01&02\\\end{pmatrix}</script><h3 id="轮密钥加"><a href="#轮密钥加" class="headerlink" title="轮密钥加"></a>轮密钥加</h3><p>此处的加法应理解为域上的加法运算（与异或等价）</p><h3 id="密钥扩展方案"><a href="#密钥扩展方案" class="headerlink" title="密钥扩展方案"></a>密钥扩展方案</h3><p>待补充</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+      <category>Crypto</category>
+      
+      <category>理论学习</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>密码系统</title>
     <link href="/2021/09/08/%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/"/>
     <url>/2021/09/08/%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/</url>
