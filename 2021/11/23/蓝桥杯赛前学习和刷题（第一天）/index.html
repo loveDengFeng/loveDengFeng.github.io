@@ -18,7 +18,7 @@
   <meta name="author" content="等风">
   <meta name="keywords" content="">
   
-  <title>分组密码AES和DES - Love_DengFeng&#39;s Blog</title>
+  <title>蓝桥杯赛前学习和刷题（第一天） - Love_DengFeng&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -165,7 +165,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="分组密码AES和DES">
+            <span class="h2" id="subtitle" title="蓝桥杯赛前学习和刷题（第一天）">
               
             </span>
 
@@ -175,8 +175,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-09-12 10:20" pubdate>
-        September 12, 2021 am
+      <time datetime="2021-11-23 11:38" pubdate>
+        November 23, 2021 am
       </time>
     </span>
   
@@ -187,7 +187,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      164 字
+      1.6k 字
     </span>
   
 
@@ -197,7 +197,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      18
        分钟
     </span>
   
@@ -227,46 +227,44 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">分组密码AES和DES</h1>
+            <h1 style="display: none">蓝桥杯赛前学习和刷题（第一天）</h1>
             
             <div class="markdown-body">
-              <h1 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h1><p>DES是一种典型的Feistel结构密码体制，它使用长度为56比特的密钥加密（解密）长度为64比特的明文（密文），获得长度为64比特的密文（明文）。其加密流程如下：</p>
-<p>1.传入64比特的明文，进行IP置换</p>
-<p>2.通过密钥扩展算法获得轮密钥，扩展算法为：将初始密钥进行PC-1置换后得到$C_0,D_0$两部分，再进行本轮的循环移位后进入PC-2置换（从56比特选取48比特）得到轮密钥。下一轮的轮密钥和上一轮的轮密钥关系为：</p>
+              <h1 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h1><p>01背包是最基础的背包问题，也是其他背包问题的基础，很多其他背包问题都可以化归为01背包问题，因此，01背包是一种很基础、很重要的背包问题。</p>
+<p>01背包问题的描述如下：</p>
 <script type="math/tex; mode=display">
-C_i=C_{i-1}<<<<r_i</script><script type="math/tex; mode=display">
-D_i=D_{i-1}<<<<r_i</script><script type="math/tex; mode=display">
-K_i=PC-2(C_iD_i)</script><p>3.初始置换后的明文分为左右两部分，进入轮密钥控制的16次F函数（轮函数）迭代（Feistel结构），前十五次的迭代方式为：$L<em>i=R</em>{i-1}，R<em>i=L</em>{i-1}+F(R_{i-1},K_i)$，最后一次的迭代方式稍稍不一样，为：</p>
+一共有N件物品，第i件（从1开始）物品的重量为w[i]，价值为v[i]，背包容量为W，求在不超出背包容量的前提下，背包最多能装的价值？</script><p>穷举法复杂度太高，不可行。这是动态规划问题的经典题之一，我们采用动态规划的方法对它进行求解。</p>
+<p>动态规划的三个步骤：</p>
+<p>1.定义数组的含义</p>
+<p>2.建立状态转移方程</p>
+<p>3.遍历数组，求出答案</p>
 <script type="math/tex; mode=display">
-L_{16}=L_{15}+F(R_{15},K_{16}),R_{16}=R_{15}</script><p>这里的”+”代表异或，最后一次不同的原因是为了保证加解密的一致性——若加密采用的轮密钥为$(K<em>1,K_2,…,K</em>{16})$，则解密采用轮密钥为$(K<em>{16},K</em>{15},…,K_1)$，并且加解密流程采用完全相同的结构和轮函数</p>
-<p>4.进行初始逆置换$IP^{-1}$，得到密文</p>
-<h2 id="核心轮函数F"><a href="#核心轮函数F" class="headerlink" title="核心轮函数F"></a>核心轮函数F</h2><p>1.将输入的32比特通过扩展函数E变为48比特</p>
-<p>2.将得到的48比特与子密钥异或后进入S盒，作为S盒的输入</p>
-<p>3.S盒是一个非线性变换，它将输入通过8个并置的6进4出（比特位）的S盒压缩成32比特。每个S盒都有一张替换表，替换表都有4行16列，对应前十六个整数（长度为4的比特串）的二进制整数全排列。设S盒的输入为$a_1a_2a_3a_4a_5a_6$，则$S(a_1a_2a_3a_4a_5a_6)$就是S盒表中第$a_1a_6$行和第$a_2a_3a_4a_5$列交叉的那个数，这里的$a_1a_6 $和$a_2a_3a_4a_5 $都是二进制整数</p>
-<p>4.将S盒得到的32位比特输出作为输入进行P置换，P置换的结果就是轮函数的输出</p>
-<h1 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h1><p>AES即美国国家高级加密标准（$Advanced\ Encryption\ Standard$），其算法为$Rijndael$算法，分组长度通常为128比特，密钥长度通常也为128比特，加密轮数为10轮</p>
-<h2 id="加密步骤"><a href="#加密步骤" class="headerlink" title="加密步骤"></a>加密步骤</h2><p>首先将输入的明文分组为16个字节$a<em>{00}a</em>{10}a<em>{20}a</em>{30}a<em>{01}a</em>{11}a<em>{21}a</em>{31}a<em>{02}a</em>{12}a<em>{22}a</em>{32}a<em>{03}a</em>{13}a<em>{23}a</em>{33}$，并+按照顺序映射为状态字节矩阵，加密操作结束时，密文按同样顺序从状态抽取，映射顺序为：</p>
-<script type="math/tex; mode=display">
-\begin{pmatrix}
-a_{00}&a_{01}&a_{02}&a_{03}\\
-a_{10}&a_{11}&a_{12}&a_{13}\\
-a_{20}&a_{21}&a_{22}&a_{23}\\
-a_{30}&a_{31}&a_{32}&a_{33}\\
-\end{pmatrix}</script><p>1.由密钥拓展算法将128比特的种子密钥拓展成11个128比特的轮密钥，每一个轮密钥同样被表示成与明文状态矩阵大小相同的矩阵</p>
-<p>2.进行初始白化：将明文状态矩阵与第0轮的轮密钥进行加法运算</p>
-<p>3.进行完全相同的9轮变换，每一轮变换都是以上一轮的输出作为输入，依次执行字节替换、行移位、列混合和轮密钥加四种运算</p>
-<p>4.最后一轮的迭代变换稍有不同，这一轮变换依次执行字节替换、行移位和轮密钥加，没有列混合</p>
-<p>5.将最后一轮输出的结果按照顺序从状态中抽取出来就是密文</p>
-<h3 id="行移位"><a href="#行移位" class="headerlink" title="行移位"></a>行移位</h3><p>状态矩阵每一行按照不同的移位值进行循环左移</p>
-<h3 id="列混合（列混淆）"><a href="#列混合（列混淆）" class="headerlink" title="列混合（列混淆）"></a>列混合（列混淆）</h3><p>将状态矩阵每一列看作$GF(2^8)$域上的次数不超过3的多项式，与下列矩阵作乘法运算</p>
-<script type="math/tex; mode=display">
-\begin{pmatrix}
-02&03&01&01\\
-01&02&03&01\\
-01&01&02&03\\
-03&01&01&02\\
-\end{pmatrix}</script><h3 id="轮密钥加"><a href="#轮密钥加" class="headerlink" title="轮密钥加"></a>轮密钥加</h3><p>此处的加法应理解为域上的加法运算（与异或等价）</p>
-<h3 id="密钥扩展方案"><a href="#密钥扩展方案" class="headerlink" title="密钥扩展方案"></a>密钥扩展方案</h3><p>待补充</p>
+设dp[i][j]表示将前i件物品装入限重为j的背包可获得的最大价值</script><p>不装入第i件物品：$dp[i-1][j]$</p>
+<p>装入第i件物品（前提是能装下），即$dp[i-1][j-w[i]]+v[i]$</p>
+<p>状态转移方程为： $dp[i][j]=max(dp[i-1][j],dp[i-1][j-w[i]]+v[i])$</p>
+<p>由转移方程可知，$dp[i][j]的值只与dp[i-1][0,…,j-1]有关$，因此我们可以采用滚动数组的方法来优化空间复杂度，注意为了避免上一层循环被覆盖，循环的时候j只能逆向枚举，伪代码为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...,W]=<span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> W,...w[i]:<br>        dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-w[i]]+v[i])<br></code></pre></td></tr></table></figure>
+<h1 id="完全背包"><a href="#完全背包" class="headerlink" title="完全背包"></a>完全背包</h1><p>完全背包跟01背包很相似，它们的差别就在于完全背包每种物品有无限多个，其他条件一致。这里的数组定义和01背包一致，但是状态转移方程发生了改变——当装入第i种物品后，还可以继续装这个物品，因此转移到$dp[i][j-w[i]]而不是dp[i-1][j-w[i]]$，于是状态转移方程为$dp[i][j]=max(dp[i-1][j],dp[i][j-w[i]]+v[i])$，我们也可以对其进行空间复杂度优化，但此时我们应该正向枚举去覆盖原有结果，伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...W]=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i=<span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j =w[i],...,W:<br>        dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-w[i]]+v[i])<br></code></pre></td></tr></table></figure>
+<h2 id="另一种分析方法"><a href="#另一种分析方法" class="headerlink" title="另一种分析方法"></a>另一种分析方法</h2><p>01背包只有两种选择即取0件和取1件，但是完全背包可以取0，1，2，…，直到超过限重($k&gt;j/w[i]$)，所以状态转移方程为：$dp[i][j]=max((dp[i-1][j-k<em>w[i]]+k</em>v[i]) for\ every \ k)$</p>
+<p>上面也可以进行空间复杂度的优化，但要注意这里的max里面是dp[i-1]，和01背包一样，必须逆向枚举，优化后的伪代码为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...,W]=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i =<span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j =W,...,w[i]:<br>        <span class="hljs-keyword">for</span> k = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,...,j/w[i]]:<br>            dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-k*w[i]]+k*v[i])<br></code></pre></td></tr></table></figure>
+<h2 id="还有一种分析方法"><a href="#还有一种分析方法" class="headerlink" title="还有一种分析方法"></a>还有一种分析方法</h2><p>还有一种方法，就是把完全背包转化为01背包，可采用二进制转换的方法转为01背包，这里暂不做讨论。</p>
+<h1 id="剪枝策略"><a href="#剪枝策略" class="headerlink" title="剪枝策略"></a>剪枝策略</h1><p>如果有更物美价廉的物品，就把贵又不值的物品扔去。</p>
+<h1 id="多重背包"><a href="#多重背包" class="headerlink" title="多重背包"></a>多重背包</h1><p>多重背包和前面两种背包很相似，只是它每种物品的数量既不是1，也不是无穷，而是有限个n[i]，分析跟完全背包的分析二相近，伪代码为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...,W]=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i= <span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j = W,...,w[i]:<br>        <span class="hljs-keyword">for</span> k = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,...,<span class="hljs-built_in">min</span>(n[i],j/w[i])]:<br>            dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-k*w[i]]+k*v[i])<br></code></pre></td></tr></table></figure>
+<p>还可以像完全背包分析三的方法转为二进制化成01背包求解来求解。</p>
+<h1 id="混合背包"><a href="#混合背包" class="headerlink" title="混合背包"></a>混合背包</h1><p>如果物品有的只有一件，有的有有限件，有的有无穷件，那么这样的问题叫做混合背包问题。如果是01背包和完全背包混合的话，根据物品类别确定顺序和逆序即可；如果再加上多重背包，用单调队列解即可。另外一种可行的方法是把多重背包转为01背包，虽然复杂度稍稍变大，但也已经很优秀了。</p>
+<h1 id="二维背包"><a href="#二维背包" class="headerlink" title="二维背包"></a>二维背包</h1><p>二维背包是指对于每件物品，具有两种不同的费用，选择一件物品要付出两种代价，对于每种代价都有可付出的最大值（也即背包容量）。设第i件物品所需的两种代价分别为a[i]和b[i]，两种代价的最大值（背包容量）分别为V和U，物品的价值为c[i]。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>费用增加一维，状态增加一维即可。设f[i] [v] [u]表示前i件物品付出两种代价分别为v和u时可获得的最大价值。</p>
+<p>状态转移方程就是：$f[i][v][u]=max(f[i-1][v][u],f[i-1][v-a[i]][u-b[i]]+c[i])$，类似的，这里也可以采用滚动数组的方式优化空间复杂度，并且当每件物品只可以取一次时v和u采用逆序的循环，当物品有如完全背包时采用顺序的循环；如多重背包时拆分物品。</p>
+<h1 id="隐藏的二维背包"><a href="#隐藏的二维背包" class="headerlink" title="隐藏的二维背包"></a>隐藏的二维背包</h1><p>有时二维背包这样隐含地说出来：最多只能取M件物品。这就相当于每件物品多了件数这一代价，可付出的代价最大为M。这样再根据每种物品可取件数采取01背包还是完全背包还是多重背包。如果要求恰好取M件，那么就在$f[0…V][M]$中寻找答案。</p>
+<h1 id="分组背包"><a href="#分组背包" class="headerlink" title="分组背包"></a>分组背包</h1><p>分组背包指每一组的物品互斥的背包问题。将每组看成一个大物品，再从大物品里面选择小物品，因此只需要加一层循环即可。</p>
+<p>伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">for</span> 所有组k:<br>    <span class="hljs-keyword">for</span> v=V,..<span class="hljs-number">.0</span>:<br>        <span class="hljs-keyword">for</span> 所有的i 属于组k:<br>            f[v]=<span class="hljs-built_in">max</span>(f[v],f[v-w[i]]+c[i])<br></code></pre></td></tr></table></figure>
+<p>显然这里也可以进行一个小剪枝。</p>
+<h1 id="有依赖的背包问题"><a href="#有依赖的背包问题" class="headerlink" title="有依赖的背包问题"></a>有依赖的背包问题</h1><p>待补充</p>
+<h1 id="求背包问题方案数"><a href="#求背包问题方案数" class="headerlink" title="求背包问题方案数"></a>求背包问题方案数</h1><p>将max改为sum即可，这样是因为状态转移方程已经考察了所有的可能背包组成方案。</p>
 
             </div>
             <hr>
@@ -276,11 +274,11 @@ a_{30}&a_{31}&a_{32}&a_{33}\\
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/CTF/">CTF</a>
+                      <a class="hover-with-bg" href="/categories/ACM/">ACM</a>
                     
-                      <a class="hover-with-bg" href="/categories/CTF/Crypto/">Crypto</a>
+                      <a class="hover-with-bg" href="/categories/ACM/DP/">DP</a>
                     
-                      <a class="hover-with-bg" href="/categories/CTF/Crypto/%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0/">理论学习</a>
+                      <a class="hover-with-bg" href="/categories/ACM/DP/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题</a>
                     
                   </div>
                 
@@ -298,18 +296,12 @@ a_{30}&a_{31}&a_{32}&a_{33}\\
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/11/23/%E8%93%9D%E6%A1%A5%E6%9D%AF%E8%B5%9B%E5%89%8D%E5%AD%A6%E4%B9%A0%E5%92%8C%E5%88%B7%E9%A2%98%EF%BC%88%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">蓝桥杯赛前学习和刷题（第一天）</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/09/08/%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F/">
-                        <span class="hidden-mobile">密码系统</span>
+                      <a href="/2021/09/12/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81AES%E5%92%8CDES/">
+                        <span class="hidden-mobile">分组密码AES和DES</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
