@@ -18,7 +18,7 @@
   <meta name="author" content="等风">
   <meta name="keywords" content="">
   
-  <title>蓝桥杯赛前学习和刷题（第一天） - Love_DengFeng&#39;s Blog</title>
+  <title>IELTS Writing(PART1) - Love_DengFeng&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -165,7 +165,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="蓝桥杯赛前学习和刷题（第一天）">
+            <span class="h2" id="subtitle" title="IELTS Writing(PART1)">
               
             </span>
 
@@ -175,8 +175,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-11-23 11:38" pubdate>
-        November 23, 2021 am
+      <time datetime="2021-12-14 19:28" pubdate>
+        December 14, 2021 pm
       </time>
     </span>
   
@@ -187,7 +187,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      330 字
     </span>
   
 
@@ -197,7 +197,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      18
+      5
        分钟
     </span>
   
@@ -227,44 +227,54 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">蓝桥杯赛前学习和刷题（第一天）</h1>
+            <h1 style="display: none">IELTS Writing(PART1)</h1>
             
             <div class="markdown-body">
-              <h1 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h1><p>01背包是最基础的背包问题，也是其他背包问题的基础，很多其他背包问题都可以化归为01背包问题，因此，01背包是一种很基础、很重要的背包问题。</p>
-<p>01背包问题的描述如下：</p>
-<script type="math/tex; mode=display">
-一共有N件物品，第i件（从1开始）物品的重量为w[i]，价值为v[i]，背包容量为W，求在不超出背包容量的前提下，背包最多能装的价值？</script><p>穷举法复杂度太高，不可行。这是动态规划问题的经典题之一，我们采用动态规划的方法对它进行求解。</p>
-<p>动态规划的三个步骤：</p>
-<p>1.定义数组的含义</p>
-<p>2.建立状态转移方程</p>
-<p>3.遍历数组，求出答案</p>
-<script type="math/tex; mode=display">
-设dp[i][j]表示将前i件物品装入限重为j的背包可获得的最大价值</script><p>不装入第i件物品：$dp[i-1][j]$</p>
-<p>装入第i件物品（前提是能装下），即$dp[i-1][j-w[i]]+v[i]$</p>
-<p>状态转移方程为： $dp[i][j]=max(dp[i-1][j],dp[i-1][j-w[i]]+v[i])$</p>
-<p>由转移方程可知，$dp[i][j]的值只与dp[i-1][0,…,j-1]有关$，因此我们可以采用滚动数组的方法来优化空间复杂度，注意为了避免上一层循环被覆盖，循环的时候j只能逆向枚举，伪代码为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...,W]=<span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> W,...w[i]:<br>        dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-w[i]]+v[i])<br></code></pre></td></tr></table></figure>
-<h1 id="完全背包"><a href="#完全背包" class="headerlink" title="完全背包"></a>完全背包</h1><p>完全背包跟01背包很相似，它们的差别就在于完全背包每种物品有无限多个，其他条件一致。这里的数组定义和01背包一致，但是状态转移方程发生了改变——当装入第i种物品后，还可以继续装这个物品，因此转移到$dp[i][j-w[i]]而不是dp[i-1][j-w[i]]$，于是状态转移方程为$dp[i][j]=max(dp[i-1][j],dp[i][j-w[i]]+v[i])$，我们也可以对其进行空间复杂度优化，但此时我们应该正向枚举去覆盖原有结果，伪代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...W]=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i=<span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j =w[i],...,W:<br>        dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-w[i]]+v[i])<br></code></pre></td></tr></table></figure>
-<h2 id="另一种分析方法"><a href="#另一种分析方法" class="headerlink" title="另一种分析方法"></a>另一种分析方法</h2><p>01背包只有两种选择即取0件和取1件，但是完全背包可以取0，1，2，…，直到超过限重($k&gt;j/w[i]$)，所以状态转移方程为：$dp[i][j]=max((dp[i-1][j-k<em>w[i]]+k</em>v[i]) for\ every \ k)$</p>
-<p>上面也可以进行空间复杂度的优化，但要注意这里的max里面是dp[i-1]，和01背包一样，必须逆向枚举，优化后的伪代码为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...,W]=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i =<span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j =W,...,w[i]:<br>        <span class="hljs-keyword">for</span> k = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,...,j/w[i]]:<br>            dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-k*w[i]]+k*v[i])<br></code></pre></td></tr></table></figure>
-<h2 id="还有一种分析方法"><a href="#还有一种分析方法" class="headerlink" title="还有一种分析方法"></a>还有一种分析方法</h2><p>还有一种方法，就是把完全背包转化为01背包，可采用二进制转换的方法转为01背包，这里暂不做讨论。</p>
-<h1 id="剪枝策略"><a href="#剪枝策略" class="headerlink" title="剪枝策略"></a>剪枝策略</h1><p>如果有更物美价廉的物品，就把贵又不值的物品扔去。</p>
-<h1 id="多重背包"><a href="#多重背包" class="headerlink" title="多重背包"></a>多重背包</h1><p>多重背包和前面两种背包很相似，只是它每种物品的数量既不是1，也不是无穷，而是有限个n[i]，分析跟完全背包的分析二相近，伪代码为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">dp[<span class="hljs-number">0</span>,...,W]=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i= <span class="hljs-number">1</span>,...,N:<br>    <span class="hljs-keyword">for</span> j = W,...,w[i]:<br>        <span class="hljs-keyword">for</span> k = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,...,<span class="hljs-built_in">min</span>(n[i],j/w[i])]:<br>            dp[j]=<span class="hljs-built_in">max</span>(dp[j],dp[j-k*w[i]]+k*v[i])<br></code></pre></td></tr></table></figure>
-<p>还可以像完全背包分析三的方法转为二进制化成01背包求解来求解。</p>
-<h1 id="混合背包"><a href="#混合背包" class="headerlink" title="混合背包"></a>混合背包</h1><p>如果物品有的只有一件，有的有有限件，有的有无穷件，那么这样的问题叫做混合背包问题。如果是01背包和完全背包混合的话，根据物品类别确定顺序和逆序即可；如果再加上多重背包，用单调队列解即可。另外一种可行的方法是把多重背包转为01背包，虽然复杂度稍稍变大，但也已经很优秀了。</p>
-<h1 id="二维背包"><a href="#二维背包" class="headerlink" title="二维背包"></a>二维背包</h1><p>二维背包是指对于每件物品，具有两种不同的费用，选择一件物品要付出两种代价，对于每种代价都有可付出的最大值（也即背包容量）。设第i件物品所需的两种代价分别为a[i]和b[i]，两种代价的最大值（背包容量）分别为V和U，物品的价值为c[i]。</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>费用增加一维，状态增加一维即可。设f[i] [v] [u]表示前i件物品付出两种代价分别为v和u时可获得的最大价值。</p>
-<p>状态转移方程就是：$f[i][v][u]=max(f[i-1][v][u],f[i-1][v-a[i]][u-b[i]]+c[i])$，类似的，这里也可以采用滚动数组的方式优化空间复杂度，并且当每件物品只可以取一次时v和u采用逆序的循环，当物品有如完全背包时采用顺序的循环；如多重背包时拆分物品。</p>
-<h1 id="隐藏的二维背包"><a href="#隐藏的二维背包" class="headerlink" title="隐藏的二维背包"></a>隐藏的二维背包</h1><p>有时二维背包这样隐含地说出来：最多只能取M件物品。这就相当于每件物品多了件数这一代价，可付出的代价最大为M。这样再根据每种物品可取件数采取01背包还是完全背包还是多重背包。如果要求恰好取M件，那么就在$f[0…V][M]$中寻找答案。</p>
-<h1 id="分组背包"><a href="#分组背包" class="headerlink" title="分组背包"></a>分组背包</h1><p>分组背包指每一组的物品互斥的背包问题。将每组看成一个大物品，再从大物品里面选择小物品，因此只需要加一层循环即可。</p>
-<p>伪代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">for</span> 所有组k:<br>    <span class="hljs-keyword">for</span> v=V,..<span class="hljs-number">.0</span>:<br>        <span class="hljs-keyword">for</span> 所有的i 属于组k:<br>            f[v]=<span class="hljs-built_in">max</span>(f[v],f[v-w[i]]+c[i])<br></code></pre></td></tr></table></figure>
-<p>显然这里也可以进行一个小剪枝。</p>
-<h1 id="有依赖的背包问题"><a href="#有依赖的背包问题" class="headerlink" title="有依赖的背包问题"></a>有依赖的背包问题</h1><p>待补充</p>
-<h1 id="求背包问题方案数"><a href="#求背包问题方案数" class="headerlink" title="求背包问题方案数"></a>求背包问题方案数</h1><p>将max改为sum即可，这样是因为状态转移方程已经考察了所有的可能背包组成方案。</p>
+              <h2 id="表示变化趋势"><a href="#表示变化趋势" class="headerlink" title="表示变化趋势"></a>表示变化趋势</h2><h3 id="下降"><a href="#下降" class="headerlink" title="下降"></a>下降</h3><p>fall                        drop                      go down    downturn</p>
+<p>downward trend          reach a low      decrease</p>
+<p>decline                 be reduced           <strong>sag</strong></p>
+<p><strong>sink</strong>                 <strong>descend</strong>             <strong>dwindle</strong></p>
+<p><strong>peter out(逐渐消失)</strong>      <strong>dip(小降)</strong>         </p>
+<p><strong>plunge</strong>          <strong>plummet</strong>             <strong>collapse</strong>         <strong>slump</strong>         ——猛降 </p>
+<h3 id="上升"><a href="#上升" class="headerlink" title="上升"></a>上升</h3><p>rise               reach a high                 upward trend</p>
+<p>increase            climb                   grow</p>
+<p><strong>ascend</strong>           <strong>mount(up)</strong>               <strong>shoot up</strong></p>
+<p><strong>soar</strong>                <strong>surge</strong>                 <strong>skyrocket</strong>       ——猛增 </p>
+<h3 id="持平"><a href="#持平" class="headerlink" title="持平"></a>持平</h3><p>keep unchanging       stay the same           remain fixed</p>
+<p>remain stable            keep constant</p>
+<p><strong>level off/out at</strong>         <strong>stabilise around</strong>       <strong>remain static</strong></p>
+<p><strong>reach a plateau(上升后持平)</strong>         <strong>stagnate</strong></p>
+<h4 id="noun"><a href="#noun" class="headerlink" title="noun"></a>noun</h4><p>level-off           stabilisation             stagnate</p>
+<h3 id="波动"><a href="#波动" class="headerlink" title="波动"></a>波动</h3><p><strong>fluctuate</strong>             <strong>surge and subside</strong>                 <strong>undulate</strong></p>
+<p><strong>increase in fits and starts</strong>             <strong>erratic changes</strong></p>
+<p><strong>turbulent changes</strong></p>
+<h3 id="达到峰值"><a href="#达到峰值" class="headerlink" title="达到峰值"></a>达到峰值</h3><p>reach the peak of                       peak up at                arrive at the top</p>
+<p><strong>crest</strong>                          <strong>culminate</strong>                          <strong>hit the prime at</strong>      （碰撞素数？doge)</p>
+<p><strong>culmination</strong>                     <strong>pinnacle</strong>                   <strong>acme</strong>             <strong>zenith</strong></p>
+<h3 id="达到谷值"><a href="#达到谷值" class="headerlink" title="达到谷值"></a>达到谷值</h3><p>drop to the valley             drop to the bottom             reach the lowest point</p>
+<p><strong>bottom out at</strong>                  <strong>go down to the trough</strong>       reach a low of</p>
+<p><strong>nadir</strong></p>
+<h3 id="猛、快"><a href="#猛、快" class="headerlink" title="猛、快"></a>猛、快</h3><p>steep             sharp             dramatic          considerable</p>
+<p><strong>drastic</strong>              <strong>substantial</strong>             overwhelming</p>
+<p>noticeable           <strong>striking</strong>          <strong>precipitous</strong>(一般指下降快)</p>
+<p><strong>grow/drop by a whopping__</strong></p>
+<h3 id="稳"><a href="#稳" class="headerlink" title="稳"></a>稳</h3><p>stable     steady          gradual</p>
+<p>smooth            moderate           modest</p>
+<h3 id="缓"><a href="#缓" class="headerlink" title="缓"></a>缓</h3><p>slight        slow         gentle              mild                 <strong>marginal</strong></p>
+<h3 id="起点-终点"><a href="#起点-终点" class="headerlink" title="起点/终点"></a>起点/终点</h3><p>start from           begin with               finish at               end with</p>
+<h3 id="加速-减速"><a href="#加速-减速" class="headerlink" title="加速/减速"></a>加速/减速</h3><p> gain speed                speed up                  slow down           lose speed</p>
+<h2 id="高级表述"><a href="#高级表述" class="headerlink" title="高级表述"></a>高级表述</h2><p>The population of female smokers only rose by 1%</p>
+<p><strong>The population of female smokers rose by a negligible 1%</strong></p>
+<p>The difference was getting smaller.</p>
+<p> <strong>The disparity was diminishing.</strong></p>
+<p> People of all education backgrounds had a pay-rise. </p>
+<p><strong>There was a pay-rise across the board. </strong></p>
+<p>since 1940= starting from 1940</p>
+<p><strong>from 1940 onwards</strong></p>
+<p>The higher the education levels were, the higher the incomes were. </p>
+<p><strong>The education levels were in positive correlation with the incomes.</strong></p>
+<p><strong>The education levels were proportionate to the incomes.</strong></p>
+<p>成反比就是<strong>be in negative correlation with be in inverse</strong></p>
 
             </div>
             <hr>
@@ -274,11 +284,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/ACM/">ACM</a>
+                      <a class="hover-with-bg" href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/">课程学习</a>
                     
-                      <a class="hover-with-bg" href="/categories/ACM/DP/">DP</a>
-                    
-                      <a class="hover-with-bg" href="/categories/ACM/DP/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题</a>
+                      <a class="hover-with-bg" href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E9%9B%85%E6%80%9D%E9%80%89%E4%BF%AE%E8%AF%BE/">雅思选修课</a>
                     
                   </div>
                 
@@ -296,18 +304,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/12/14/IELTS%E9%80%89%E4%BF%AE%E8%AF%BE%E4%BD%9C%E6%96%87/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">IELTS Writing(PART1)</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/09/12/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81AES%E5%92%8CDES/">
-                        <span class="hidden-mobile">分组密码AES和DES</span>
+                      <a href="/2021/11/23/%E8%93%9D%E6%A1%A5%E6%9D%AF%E8%B5%9B%E5%89%8D%E5%AD%A6%E4%B9%A0%E5%92%8C%E5%88%B7%E9%A2%98%EF%BC%88%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89/">
+                        <span class="hidden-mobile">蓝桥杯赛前学习和刷题（第一天）</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
