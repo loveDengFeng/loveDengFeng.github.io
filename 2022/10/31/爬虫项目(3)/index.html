@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/%E7%AD%89%E9%A3%8E.png">
+  <link rel="icon" href="/img/%E7%AD%89%E9%A3%8E.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="等风">
+  <meta name="keywords" content="">
+  
+  <title>爬虫项目(3)——微博社交信息获取 - Love_DengFeng&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Love_DengFeng's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/1.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="爬虫项目(3)——微博社交信息获取">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-10-31 15:07" pubdate>
+        October 31, 2022 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">爬虫项目(3)——微博社交信息获取</h1>
+            
+            <div class="markdown-body">
+              <h1 id="selenium爬虫项目（3）——微博社交信息获取"><a href="#selenium爬虫项目（3）——微博社交信息获取" class="headerlink" title="selenium爬虫项目（3）——微博社交信息获取"></a>selenium爬虫项目（3）——微博社交信息获取</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>最近事好像又挺多，也不知道在忙啥。本来计划周末写完这个大作业的，然而昨天被抓去校运会拍了一天照，晚上回来开始写，基本上把信息获取部分都给完成了，剩下的只有信息的可视化了，这一篇先介绍微博社交信息的部分，下一篇写动态信息的获取。</p>
+<h2 id="step1-获取关注列表和粉丝列表前十个的信息"><a href="#step1-获取关注列表和粉丝列表前十个的信息" class="headerlink" title="step1 获取关注列表和粉丝列表前十个的信息"></a>step1 获取关注列表和粉丝列表前十个的信息</h2><h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">import</span> sys<br><br>non_bmp_map=<span class="hljs-built_in">dict</span>.fromkeys(<span class="hljs-built_in">range</span>(<span class="hljs-number">0x10000</span>,sys.maxunicode+<span class="hljs-number">1</span>),<span class="hljs-number">0xfffd</span>)<br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br><br>    chrome_driver=<span class="hljs-string">&#x27;C:\\Users\\lenovo\\Anaconda3\\Lib\\site-packages\\chromedriver.exe&#x27;</span><br>    driver = webdriver.Chrome(executable_path = chrome_driver)<br>    driver.get(<span class="hljs-string">&#x27;https://www.baidu.com&#x27;</span>)<br>    <span class="hljs-keyword">try</span>:<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;kw&quot;]&#x27;</span>).click()<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;kw&quot;]&#x27;</span>).send_keys(<span class="hljs-string">&#x27;微博&#x27;</span>)<br>        time.sleep(<span class="hljs-number">3</span>)<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;su&quot;]&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">2</span>)<br>        <br>        <span class="hljs-comment">#driver.find_element_by_xpath(&#x27;//*[@id=&quot;1&quot;]/div/div[1]/h3/a&#x27;).click()</span><br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;2&quot;]/div/div[1]/h3/a&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">10</span>)<br><br>        handles=driver.window_handles<br>        <span class="hljs-keyword">for</span> handle <span class="hljs-keyword">in</span> handles:<br>            <span class="hljs-keyword">if</span> handle!=driver.current_window_handle:<br>                driver.close()<br>                driver.switch_to.window(handle)<br>        driver.execute_script(<span class="hljs-string">&quot;window.scrollBy(0,3000)&quot;</span>)<br>        time.sleep(<span class="hljs-number">5</span>)<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;app&quot;]/div[1]/div[1]/div[2]/div[1]/div/div/div[3]/div[1]/div/a[1]&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">5</span>)<br>        <br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;app&quot;]/div[4]/div[1]/div/div[2]/div/div/div[5]/a[1]&#x27;</span>).click()<br><br>        handles=driver.window_handles<br>        <span class="hljs-keyword">for</span> handle <span class="hljs-keyword">in</span> handles:<br>            <span class="hljs-keyword">if</span> handle!=driver.current_window_handle:<br>                driver.close()<br>                driver.switch_to.window(handle)<br>        time.sleep(<span class="hljs-number">10</span>)<br>        <br>        <br>        driver.find_element_by_id(<span class="hljs-string">&quot;loginname&quot;</span>).click()<br>        driver.find_element_by_id(<span class="hljs-string">&quot;loginname&quot;</span>).send_keys(<span class="hljs-string">&quot;你的账号&quot;</span>)<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;pl_login_form&quot;]/div/div[3]/div[2]/div/span&#x27;</span>).click()<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;pl_login_form&quot;]/div/div[3]/div[2]/div/input&#x27;</span>).send_keys(<span class="hljs-string">&#x27;你的密码&#x27;</span>)<br>        time.sleep(<span class="hljs-number">5</span>)<br>        driver.find_element_by_class_name(<span class="hljs-string">&#x27;W_btn_a&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">5</span>)<br>        <br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;dmCheck&quot;]&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">1</span>)<br>        driver.find_element_by_id(<span class="hljs-string">&#x27;send_dm_btn&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">20</span>)<br>        <br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;plc_top&quot;]/div/div/div[2]/input&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">20</span>)<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;plc_top&quot;]/div/div/div[2]/input&#x27;</span>).send_keys(<span class="hljs-string">&quot;等风&quot;</span>)<br>        time.sleep(<span class="hljs-number">10</span>)<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;plc_top&quot;]/div/div/div[2]/a&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">2</span>)<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;/html/body/div[1]/div[2]/ul/li[2]/a&#x27;</span>).click()<br>        <span class="hljs-comment">#driver.find_element_by_xpath(&#x27;//*[@id=&quot;pl_user_feedList&quot;]/div[1]/div[2]/div/a[1]&#x27;).click()</span><br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;pl_user_feedList&quot;]/div[2]/div[2]/div/a[1]&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">2</span>)<br>        <br>        handles=driver.window_handles<br>        <span class="hljs-keyword">for</span> handle <span class="hljs-keyword">in</span> handles:<br>            <span class="hljs-keyword">if</span> handle!=driver.current_window_handle:<br>                driver.close()<br>                driver.switch_to.window(handle)<br>        time.sleep(<span class="hljs-number">10</span>)<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_UserInfo__6&quot;]/div[2]/div[1]/div/a/span&#x27;</span>).click()<br>        time.sleep(<span class="hljs-number">5</span>)<br>        handles=driver.window_handles<br>        <span class="hljs-keyword">for</span> handle <span class="hljs-keyword">in</span> handles:<br>            <span class="hljs-keyword">if</span> handle!=driver.current_window_handle:<br>                driver.close()<br>                driver.switch_to.window(handle)<br>        time.sleep(<span class="hljs-number">10</span>)<br>        source=driver.page_source<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;information1.txt&quot;</span>,<span class="hljs-string">&quot;w&quot;</span>,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            f.write(<span class="hljs-built_in">str</span>(source).translate(non_bmp_map))<br>        <br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__50&quot;]/div/div/div/table/tbody/tr/td[1]/a/strong&#x27;</span>).click() <span class="hljs-comment">#点开关注列表</span><br>        time.sleep(<span class="hljs-number">3</span>)<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">11</span>): <span class="hljs-comment">#打开十个关注人的窗口</span><br>            driver.find_element_by_xpath(<span class="hljs-string">f&#x27;//*[@id=&quot;Pl_Official_HisRelation__56&quot;]/div/div/div/div[2]/div[1]/ul/li[<span class="hljs-subst">&#123;i&#125;</span>]/dl/dd[1]/div[1]/a[1]&#x27;</span>).click()<br>            time.sleep(<span class="hljs-number">1</span>)<br>        guanzhu=driver.window_handles[<span class="hljs-number">1</span>:]<br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(guanzhu)):<br>            time.sleep(<span class="hljs-number">1</span>)<br>            driver.switch_to.window(guanzhu[<span class="hljs-built_in">len</span>(guanzhu)-<span class="hljs-number">1</span>-i])<br>            <span class="hljs-keyword">try</span>:<br>                time.sleep(<span class="hljs-number">3</span>)<br>                <span class="hljs-keyword">try</span>:   <span class="hljs-comment">#处理不同的格式</span><br>                    guanzhu1=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[1]/strong&#x27;</span>)  <span class="hljs-comment">#关注数</span><br>                    <span class="hljs-built_in">print</span>(guanzhu1.text)<br>                    fans1=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[2]/strong&#x27;</span>) <span class="hljs-comment">#粉丝数</span><br>                    <span class="hljs-built_in">print</span>(fans1.text)<br>                    blogs=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[3]/strong&#x27;</span>)  <span class="hljs-comment">#博文数</span><br>                    <span class="hljs-built_in">print</span>(blogs.text)<br>                <span class="hljs-keyword">except</span>:<br>                    guanzhu1=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[1]/a/strong&#x27;</span>)<br>                    <span class="hljs-built_in">print</span>(guanzhu1.text)<br>                    fans1=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[2]/a/strong&#x27;</span>)<br>                    <span class="hljs-built_in">print</span>(fans1.text)<br>                    blogs=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[3]/a/strong&#x27;</span>)<br>                    <span class="hljs-built_in">print</span>(blogs.text)<br>                driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_UserInfo__6&quot;]/div[2]/div[1]/div/a&#x27;</span>).click()<br>                time.sleep(<span class="hljs-number">3</span>)<br>                source=driver.page_source<br>                <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">f&quot;关注_<span class="hljs-subst">&#123;i&#125;</span>.txt&quot;</span>,<span class="hljs-string">&quot;w&quot;</span>,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:    <span class="hljs-comment">#个人信息写入文件</span><br>                    f.write(<span class="hljs-built_in">str</span>(source).translate(non_bmp_map))<br>                time.sleep(<span class="hljs-number">1</span>)<br>                driver.close()<br>            <span class="hljs-keyword">except</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;no info&quot;</span>)<br>                driver.close()<br><br>            time.sleep(<span class="hljs-number">2</span>)<br>        driver.switch_to.window(driver.window_handles[<span class="hljs-number">0</span>])<br>        driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Official_HisRelationNav__55&quot;]/div/div[2]/div[1]/div/div/div/div/ul/li[2]/a&#x27;</span>).click()  <span class="hljs-comment">#打开粉丝列表</span><br>        time.sleep(<span class="hljs-number">5</span>)<br>        <br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">11</span>):  <span class="hljs-comment">#点开十个粉丝的窗口</span><br>            driver.find_element_by_xpath(<span class="hljs-string">f&#x27;//*[@id=&quot;Pl_Official_HisRelation__56&quot;]/div/div/div/div[2]/div[1]/ul/li[<span class="hljs-subst">&#123;i&#125;</span>]/dl/dd[1]/div[1]/a[1]&#x27;</span>).click()<br>            time.sleep(<span class="hljs-number">1</span>)<br>        fans=driver.window_handles[<span class="hljs-number">1</span>:]<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(fans)):<br>            time.sleep(<span class="hljs-number">1</span>)<br>            driver.switch_to.window(fans[<span class="hljs-built_in">len</span>(fans)-<span class="hljs-number">1</span>-i])<br>            <span class="hljs-keyword">try</span>:   <span class="hljs-comment">#处理不同的格式</span><br>                time.sleep(<span class="hljs-number">3</span>)<br>                guanzhu1=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[1]/a/strong&#x27;</span>)  <span class="hljs-comment">#关注数</span><br>                <span class="hljs-built_in">print</span>(guanzhu1.text)<br>                fans1=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[2]/a/strong&#x27;</span>)  <span class="hljs-comment">#粉丝数</span><br>                <span class="hljs-built_in">print</span>(fans1.text)<br>                blogs=driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_T8CustomTriColumn__3&quot;]/div/div/div/table/tbody/tr/td[3]/a/strong&#x27;</span>) <span class="hljs-comment">#博文数</span><br>                <span class="hljs-built_in">print</span>(blogs.text)<br>                driver.find_element_by_xpath(<span class="hljs-string">&#x27;//*[@id=&quot;Pl_Core_UserInfo__6&quot;]/div[2]/div[1]/div/a&#x27;</span>).click()<br>                time.sleep(<span class="hljs-number">3</span>)<br>                source=driver.page_source<br>                <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">f&quot;粉丝_<span class="hljs-subst">&#123;i&#125;</span>.txt&quot;</span>,<span class="hljs-string">&quot;w&quot;</span>,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:  <span class="hljs-comment">#个人信息写入文件</span><br>                    f.write(<span class="hljs-built_in">str</span>(source).translate(non_bmp_map))<br>                time.sleep(<span class="hljs-number">1</span>)<br>                driver.close()<br>            <span class="hljs-keyword">except</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;no info&quot;</span>)<br>                driver.close()<br><br>            time.sleep(<span class="hljs-number">2</span>)<br>        <br>    <span class="hljs-keyword">finally</span>:<br>        time.sleep(<span class="hljs-number">30</span>)<br>        driver.quit()<br></code></pre></td></tr></table></figure>
+<h3 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h3><p>这一步总体来说需要注意很多地方，首先是窗口句柄的转换，需要进入不同用户的主页进行信息采集，这一步需要将当前窗口句柄设置好；其次对于不同类型的用户，官方账号和普通用户，它们主页的格式有所不同，需要同时对这两种类型的用户考虑，此外还有关注人数、粉丝数是否大于10的判断，这里我们为了简便，直接采用try-except语句处理。</p>
+<h2 id="End"><a href="#End" class="headerlink" title="End"></a>End</h2><p>由于时间原因，而且上面的过程基本上也都是体力活（界面的跳转和格式的混乱确实烦人），所以不作过多解释，将代码调通，能获取到关注列表和粉丝列表的关注数、点赞数、博文数和个人信息即可。<br>下面是获取到的关注数、点赞数、博文数（个人信息已写入文件）：<br><a target="_blank" rel="noopener" href="https://imgse.com/i/xoLEwj"><img src="https://s1.ax1x.com/2022/10/31/xoLEwj.png" srcset="/img/loading.gif" lazyload alt="xoLEwj.png"></a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%A1%B9%E7%9B%AE/%E7%88%AC%E8%99%AB/">爬虫</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/31/%E7%88%AC%E8%99%AB%E9%A1%B9%E7%9B%AE(4)/">
+                        <span class="hidden-mobile">爬虫项目(3)——微博社交信息获取</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
